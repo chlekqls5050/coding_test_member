@@ -7,7 +7,7 @@ const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 export default function Step3() {
-  const handleSocialLogin = async (provider: "kakao" | "naver") => {
+  const handleSocialLogin = async (provider: any) => {
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider,
       options: {
