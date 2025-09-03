@@ -1,10 +1,11 @@
-"use client";
+'use client'
 
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabaseClient";
+import { User } from "@supabase/supabase-js"; // User 타입 임포트
 
 export default function CallbackPage() {
-  const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState<User | null>(null); // any 대신 User | null
 
   useEffect(() => {
     const getUser = async () => {
