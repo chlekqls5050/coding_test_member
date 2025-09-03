@@ -7,9 +7,9 @@ const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 export default function Step3() {
-  const handleSocialLogin = async (provider: any) => {
+  const handleSocialLogin = async (provider: "kakao" | "naver") => {
     const { data, error } = await supabase.auth.signInWithOAuth({
-      provider,
+      provider: provider as any,
       options: {
         queryParams: { prompt: "login" }, // 매번 로그인 유도
         skipBrowserRedirect: true, // 👈 새 창 대신 url을 반환받음
