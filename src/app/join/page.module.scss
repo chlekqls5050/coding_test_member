@@ -153,14 +153,17 @@
             font-size: 0.7rem;
             font-weight: 500;
             text-align: center;
-            padding: 13px 50px 14px;
+            // padding: 13px 50px 14px;
+            padding: 13px 0 14px;
+            width: 50%;
             line-height: 1;
             border-radius: 5px;
             transition: all .2s;
             
             border: 1px solid #4169E1;
         }
-        .prev_btn {
+        .prev_btn,
+        .login_btn {
             background: #4169E1;
             color: #fff;
         }
@@ -192,4 +195,42 @@
     width: 12px;
     height: 12px;
   }
+}
+
+@media (max-width: 480px) {
+    .join_wrap {
+        
+        .step_wrap {
+            margin-bottom: 40px;
+        }
+        
+        .input_box {
+            .input_title {
+                font-size: .8rem;
+            }
+            label {
+                input {
+                    font-size: 0.75rem;
+                    &::placeholder {
+                        font-size: 0.75rem;
+                    }
+                }
+            }
+
+            &.radio_box {
+                label {
+                    input {
+                        + span {
+                            font-size: 0.75rem;
+                        }
+                    }
+                }
+            }
+        }
+        
+        .btn_wrap {
+            margin-top: 30px;
+            gap: 15px;
+        }
+    }
 }

@@ -31,10 +31,12 @@ export default function LoginPage() {
       const { data: member, error: fetchError } = await supabase.from("member").select("userId, password, nickname").eq("userId", userId).single(); 
       if (fetchError || !member) {
         setError("아이디가 존재하지 않습니다.");
+        alert("아이디가 존재하지 않습니다.");
         return;
       }
       if (member.password != password) {
         setError("비밀번호가 틀립니다.");
+        alert("비밀번호가 틀립니다.");
         return;
       }
 
@@ -42,7 +44,7 @@ export default function LoginPage() {
       setStep("complete");
     } catch (err) {
         setError("로그인 처리 중 오류가 발생했습니다.");
-        console.error(err);
+        alert(err);
     }
   };
 

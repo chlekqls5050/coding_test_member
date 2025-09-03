@@ -4,9 +4,11 @@ import { supabase } from "@/lib/supabaseClient";
 import { useState } from "react";
 import styles from "./page.module.scss";
 import Link from "next/link";
+import SocialLogin from "@/app/components/SocialLogin";
+
 
 export default function Home() {
-  const [step, setStep] = useState<"step1" | "step2" | "step3" | "complete">("step1");
+  const [step, setStep] = useState<"step1" | "step2" | "step3" | "complete">("step3");
   
   const [formData, setFormData] = useState({
     userId: "",
@@ -30,26 +32,10 @@ export default function Home() {
       .insert([formData]);
 
     if (error) {
-      console.error("회원가입 실패:", error.message);
       alert("회원가입 실패: " + error.message);
     } else {
-      console.log("회원가입 성공:", data);
       setStep("complete");
     }
-  };
-
-  const checkUserId = async (userId: string) => {
-    const { data, error } = await supabase
-      .from("member")
-      .select("userId")
-      .eq("userId", userId);
-
-    if (error) {
-      console.error("아이디 중복", error.message);
-      return false;
-    }
-
-    return data && data.length > 0; // true면 이미 존재
   };
 
   const validateStep = async () => {
@@ -71,10 +57,7 @@ export default function Home() {
       }
 
       // 아이디 중복 체크
-      const { data, error } = await supabase
-        .from("member")
-        .select("userId")
-        .eq("userId", userId);
+      const { data, error } = await supabase.from("member").select("userId").eq("userId", userId);
 
       if (error) {
         alert("아이디 체크 중 오류가 발생했습니다.");
@@ -194,24 +177,43 @@ export default function Home() {
             </>
           }
 
-          {step === "step3" &&
-            <>
-              <div className={styles.step3}>
-              </div>
-              <div className={styles.btn_wrap}>
-                <button type="button" className={styles.prev_btn} onClick={() => setStep("step2")}>이전</button>
-                <button type="button" className={styles.complete_btn} onClick={handleSubmit}>회원가입 완료</button>
-              </div>
-            </>
-          }
+         {step === "step3" && (
+          <>
+            <div className={styles.step3}>
+              {/* 카카오 로그인 버튼 들어가는 부분 */}
+              <SocialLogin />
+            </div>
+            <div className={styles.btn_wrap}>
+              <button
+                type="button"
+                className={styles.prev_btn}
+                onClick={() => setStep("step2")}
+              >
+                이전
+              </button>
+              <button
+                type="button"
+                className={styles.complete_btn}
+                onClick={handleSubmit}
+              >
+                회원가입
+              </button>
+            </div>
+          </>
+        )}
+
         </form>
         
 
-          {step === "complete" &&
-          <div className={styles.complete_wrap}>
-            <p>회원가입이 완료 되었습니다.</p>
+        {step === "complete" &&
+        <div className={styles.complete_wrap}>
+          <p>회원가입이 완료 되었습니다.</p>
+
+          <div className={styles.btn_wrap}>
+            <Link href="/login" className={styles.login_btn}>로그인 하러가기</Link>
           </div>
-          }
+        </div>
+        }
       </div>
     </section>
   );
