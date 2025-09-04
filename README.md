@@ -1,4 +1,4 @@
-- 프로젝트 실행 방법
+## 프로젝트 실행 방법
 1. 저장소 클론
 ```bash
 git clone https://github.com/username/project-name.git
@@ -28,8 +28,8 @@ npm run build
 npm start
 ```
 
- 
-- 기술 선택 구체적인 이유 서술
+   
+## 기술 선택 구체적인 이유 서술
 
 Next.js
 
@@ -50,10 +50,10 @@ CSS Module
 
 컴포넌트 단위 스타일링 가능
 클래스명 충돌 방지
-Tailwind보다 간단하게 스타일을 관리하고자 선택
+Tailwind보다 간단하게 스타일을 관리하고자 선택  
 
-
-- 발생한 이슈와 이슈 해결 과정에 대한 서술
+  
+## 발생한 이슈와 이슈 해결 과정에 대한 서술
 
 [Supabase 이메일 인증 문제]
 문제: 회원가입 후 로그인 시 AuthApiError: Email not confirmed 에러 발생
