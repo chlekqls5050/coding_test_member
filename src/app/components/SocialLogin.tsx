@@ -37,8 +37,8 @@ export default function Step3() {
           }
         }, 500);
       }
-    } catch (err: any) {
-      alert(`로그인 실패: ${err.message}`);
+    } catch (err) {
+      alert(`로그인 실패: ${(err as Error).message}`);
     }
   };
 
