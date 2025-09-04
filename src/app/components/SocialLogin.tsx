@@ -1,6 +1,8 @@
 "use client";
 
 import { createClient, Provider } from "@supabase/supabase-js";
+import Image from "next/image";
+import styles from './SocialLogin.module.scss';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
@@ -8,31 +10,42 @@ const supabase = createClient(supabaseUrl, supabaseKey);
 
 export default function Step3() {
   const handleSocialLogin = async (provider: "kakao" | "naver") => {
-    const { data, error } = await supabase.auth.signInWithOAuth({
-      
-        provider: "kakao" as Provider,
-      options: {
-        queryParams: { prompt: "login" }, // 매번 로그인 유도
-        skipBrowserRedirect: true, // 👈 새 창 대신 url을 반환받음
-      },
-    });
+    try {
+      const { data, error } = await supabase.auth.signInWithOAuth({
+        provider: provider as Provider,
+        options: {
+          queryParams: { prompt: "login" },
+          skipBrowserRedirect: true,
+        },
+      });
 
-    if (error) {
-      alert(`로그인 실패: ${error.message}`);
-    } else if (data?.url) {
-      console.log("OAuth URL:", data.url);
-      // 👇 직접 새 창 열기
-      window.open(data.url, "_blank", "width=500,height=600");
+      if (error) throw error;
+
+      if (data?.url) {
+        const loginWindow = window.open( data.url, "_blank", "width=500,height=600" );
+
+        const pollTimer = setInterval(async () => {
+          if (loginWindow?.closed) {
+            clearInterval(pollTimer);
+            const { data: { session }, } = await supabase.auth.getSession();
+
+            if (session?.user) {
+              console.log("로그인 완료 :", session.user);
+            } else {
+              console.log("로그인 세션 에러");
+            }
+          }
+        }, 500);
+      }
+    } catch (err: any) {
+      alert(`로그인 실패: ${err.message}`);
     }
   };
 
   return (
-    <div>
-      <h2>3단계: SNS 계정 연결</h2>
-      <p>회원가입을 완료하려면 SNS 계정을 연동하거나, 건너뛸 수 있습니다.</p>
-
-      <button onClick={() => handleSocialLogin("kakao")}>카카오 계정 연결</button>
-      <button onClick={() => handleSocialLogin("naver")}>네이버 계정 연결</button>
-    </div>
+    <button className={`${styles.btn} ${styles.kakao_btn}`} onClick={() => handleSocialLogin("kakao")}>
+        <Image src="/images/kakao_logo.png" alt="카카오 연동" width={30} height={30}/>
+        카카오 계정 연결
+    </button>
   );
 }

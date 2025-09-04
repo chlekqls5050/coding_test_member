@@ -8,7 +8,7 @@ import SocialLogin from "@/app/components/SocialLogin";
 
 
 export default function Home() {
-  const [step, setStep] = useState<"step1" | "step2" | "step3" | "complete">("step3");
+  const [step, setStep] = useState<"step1" | "step2" | "step3" | "complete">("step1");
   
   const [formData, setFormData] = useState({
     userId: "",
